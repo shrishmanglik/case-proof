@@ -154,6 +154,7 @@ Exact results and fresh-clone evidence are recorded in [the evidence manifest](d
 - No runtime AI calls and no external effects
 - Typed API requests fail closed
 - Proposed Supabase schema enables RLS on all eight application tables
+- Tenant-qualified composite foreign keys prevent relational records and authorities from crossing tenant boundaries
 - Tenant- and role-scoped policies; evidence, proof, and audit records are append-only for browser roles
 - Provider application, auth operation, and live RLS behaviour remain **UNKNOWN** because no provider mutation was authorized
 

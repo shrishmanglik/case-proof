@@ -38,7 +38,7 @@ The engine has no UI, AI, provider, or environment dependency. SHA-256 receipts 
 
 ## Persistence and RLS
 
-The source migration defines eight application tables. Every table enables RLS. Policies use `auth.uid()` plus tenant membership and named roles. Proof runs, evidence receipts, and audit events are append-only to browser roles. Live policy behaviour is not claimed because the migration was not applied.
+The source migration defines eight application tables. Every table enables RLS. Policies use `auth.uid()` plus tenant membership and named roles. Tenant-qualified composite foreign keys bind initiatives, stories, dependencies, proof runs, evidence receipts, actors, and authorities to the same tenant; contract tests deliberately remove each tenant key and must fail. Proof runs, evidence receipts, and audit events are append-only to browser roles. Live policy behaviour is not claimed because the migration was not applied.
 
 ## Reversibility
 

@@ -31,7 +31,7 @@ Prepared: 2026-08-01 (America/Toronto)
 | Typed domain and API boundary | DONE LOCAL | `src/domain/*`; `POST /api/v1/proof-runs` with Zod validation |
 | Deterministic control spine | DONE LOCAL | 12 detectors, 12 known-bad fixtures, 12 clean fixtures, stable SHA-256 receipts |
 | Human authority | DONE LOCAL | Session-local readiness form; invalid edits revoke prior review state; consequence authority is never automated |
-| Supabase design | DONE SOURCE-ONLY | 8 application tables; RLS enabled on every table; tenant/role policies; append-only proof/evidence/audit records |
+| Supabase design | DONE SOURCE-ONLY | 8 application tables; RLS enabled on every table; tenant/role policies; tenant-qualified composite foreign keys; append-only proof/evidence/audit records |
 | Provider schema/auth state | UNKNOWN | Migration not applied; no provider action authorized |
 | Runtime AI | NOT IMPLEMENTED | No model dependency or network call; proposal role documented only |
 
@@ -40,11 +40,13 @@ Prepared: 2026-08-01 (America/Toronto)
 | Command/control | Expected | Observed | State |
 |---|---|---|---|
 | Pre-fix `npm.cmd run test:controls` | Failing-before | Exit 1; expected 12 controls, received 0 | VERIFIED |
-| `npm.cmd test` | Full local suite green | 4 files, 22 tests passed | VERIFIED |
-| `npm.cmd run control:mutation` | Disabled critical detector must fail gate | Exit 1; `DET-CP-R4`; suite `UNHEALTHY`; digest `e4dcfe2403777b89b75a8340afc119918f4d21fd5c942cb219b38e05518aa12c` | VERIFIED |
+| Reviewer adjacency control before correction | Invalid required evidence must be rejected | Exit 1; CP-R4, CP-R7, and CP-R12 all returned `PASS`; 3 failed, 15 passed | VERIFIED FAILING CONTROL |
+| `npm.cmd test` | Full corrected local suite green | 4 files, 46 tests passed | VERIFIED |
+| Tenant-join mutation matrix | Removing tenant scope from any declared relation must fail | 12 tenant-qualified relationship mutations passed their negative tests | VERIFIED LOCAL |
+| `npm.cmd run control:mutation` | Disabled critical detector must fail gate | Exit 1; `DET-CP-R4`; suite `UNHEALTHY`; digest `527df41b7f785455db86b0a0f950c9bb6e4384efb6b4a3d19abe210a864091ba` | VERIFIED |
 | `npm.cmd run control:gate` run 1 | Restored gate green | 1/1 passed; exit 0 | VERIFIED |
 | `npm.cmd run control:gate` run 2 | Identical restored gate green | 1/1 passed; exit 0 | VERIFIED |
-| Restored suite digest | Stable across complete runs | `cfc27e6e79a4561b2939a12ae56611db185560f983a46946e792ef9655bca9bf` | VERIFIED |
+| Restored suite digest | Stable across complete runs | `c91b9535c98ab5cf4809765200724720fa762c9faabbf52073bf072e61e40008` | VERIFIED |
 
 ## Static, build, and security proof
 
@@ -69,15 +71,17 @@ Tool: Playwright CLI with local Chrome against the production build at `127.0.0.
 4. Edited the accepted review to invalid input; state immediately reverted to `Human action required` and the field exposed an accessible alert.
 5. Disabled `DET-CP-R4`; UI showed `UNHEALTHY`, 11/12 healthy, and CP-R4 unhealthy.
 6. Restored the detector; UI showed `HEALTHY`, 12/12 healthy, with the stable restored digest.
-7. Resized to 390 x 844; measured `documentWidth=390`, `viewport=390`, `overflow=false`.
+7. Resized to 390 x 844 after the corrected receipt rendered; measured `documentWidth=375`, `viewport=390`, `overflow=false`.
 8. Mobile and desktop sessions reported zero console errors and zero warnings.
+9. Measured both primary detector controls at exactly 44px height after the accessibility correction.
 
 Artifacts:
 
 - `docs/screenshots/home-desktop.png` (317,141 bytes)
-- `docs/screenshots/workspace-mutation.png` (308,755 bytes)
-- `docs/screenshots/workspace-mobile.png` (221,043 bytes)
+- `docs/screenshots/workspace-mutation.png` (66,755 bytes)
+- `docs/screenshots/workspace-mobile.png` (58,674 bytes)
 - `docs/evidence/20260801-0909-caseproof-build-report.html` (self-contained claim-state report)
+- `docs/evidence/20260801-0954-caseproof-build-report.html` (corrective claim-state report)
 - `docs/evidence/latest.html` (stable pointer to the same report)
 
 ## Fresh-clone proof
@@ -100,13 +104,20 @@ Source: a new single-branch HTTPS clone of the pushed public branch at commit `9
 |---|---|
 | Local source/test/build/browser | VERIFIED as listed above |
 | GitHub public visibility | VERIFIED |
-| Task branch/commit | VERIFIED on GitHub at the SHA above |
-| Pull request | VERIFIED GITHUB | Public PR `https://github.com/shrishmanglik/case-proof/pull/1`; opened as draft so the URL could be recorded before the single full hosted validation |
-| Hosted CI execution | UNKNOWN until the PR workflow runs real steps |
+| Task branch/commit | SPLIT TRUTH | GitHub PR head is `1ebd131818828b1671dd54a900267dbec11f8456`; corrected local commit is `18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8` and is not pushed at this manifest revision |
+| Pull request | VERIFIED GITHUB | Public PR `https://github.com/shrishmanglik/case-proof/pull/1`; open, ready for review, and unmerged |
+| Hosted CI execution | VERIFIED FOR PRIOR HEAD | Run `30701440007` executed real checkout/install/test/typecheck/lint/build steps and passed at `1ebd131818828b1671dd54a900267dbec11f8456`; it does not validate the unpushed correction |
 | Deployment/provider/auth/database/payment | NOT AUTHORIZED / UNKNOWN |
 | Customer, employer, demand, adoption, revenue, savings, outcomes | UNKNOWN; no claim made |
 
+## Independent review and correction
+
+- Distinct REVIEWER verdict at PR head `1ebd131818828b1671dd54a900267dbec11f8456`: `REVISE` with two P1 and two P2 findings.
+- Local commit `18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8` corrects strict required-value validation, tenant-qualified relational integrity, 44px detector targets, and mobile receipt overflow.
+- Corrected local proof: 46/46 tests, typecheck, lint, build, zero audit vulnerabilities, expected critical mutation failure, and two restored passes.
+
 ## Remaining gates
 
-- Mark the evidence-complete PR ready to start its single full hosted validation.
-- Obtain a verdict from a distinct REVIEWER session. Do not merge or deploy.
+- Obtain a distinct read-only re-review of the corrected local immutable commit.
+- Obtain explicit corrective hosted-run budget approval before pushing the corrected commit to PR #1.
+- After authorization, push the same reviewed commit, re-prove a fresh clone of the remote branch, and run one corrective hosted validation. Do not merge or deploy.

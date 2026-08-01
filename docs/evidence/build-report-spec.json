@@ -1,8 +1,10 @@
 {
-  "title": "CaseProof initial build evidence report",
-  "subtitle": "Builder closeout candidate before public pull-request review",
+  "title": "CaseProof corrective build evidence report",
+  "subtitle": "Independent-review remediation held before corrective hosted validation",
   "author": "CaseProof Development Studio BUILDER",
-  "decisions_needed": [],
+  "decisions_needed": [
+    "Approve one corrective hosted PR validation so the reviewed local correction can be pushed to PR #1."
+  ],
   "sections": [
     {
       "title": "Outcome",
@@ -24,7 +26,12 @@
             {
               "state": "VERIFIED",
               "claim": "The authorized public pull request exists and remains unmerged.",
-              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 was opened as draft to record the evidence URL before its single full hosted validation."
+              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 is open, ready for review, unmerged, and passed a real hosted validation at prior head 1ebd131818828b1671dd54a900267dbec11f8456."
+            },
+            {
+              "state": "BLOCKED",
+              "claim": "Independent review required correction before approval.",
+              "evidence": "The REVIEWER returned REVISE. Local commit 18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8 closes validator, tenant-integrity, target-size, and mobile-overflow findings but is not pushed pending corrective-run budget authority."
             },
             {
               "state": "GAP",
@@ -49,8 +56,18 @@
               "Status": "VERIFIED"
             },
             {
+              "Control": "Independent-review failing control",
+              "Observed": "CP-R4, CP-R7, and CP-R12 accepted invalid required evidence; 3 tests failed before correction",
+              "Status": "VERIFIED"
+            },
+            {
               "Control": "Full suite",
-              "Observed": "4 files and 22 tests passed",
+              "Observed": "Corrected local suite: 4 files and 46 tests passed",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Tenant join mutation matrix",
+              "Observed": "12 tenant-qualified relationship mutations were each rejected by the schema contract",
               "Status": "VERIFIED"
             },
             {
@@ -70,13 +87,18 @@
             },
             {
               "Control": "Production browser journey",
-              "Observed": "Review revocation and mutation recovery worked; no console errors; no mobile overflow",
+              "Observed": "Review revocation and mutation recovery worked; detector controls measured 44px; no console errors; no mobile overflow after restored receipt",
               "Status": "VERIFIED"
             },
             {
-              "Control": "Fresh public-branch clone",
-              "Observed": "Installed 408 packages, passed 22 tests, typechecked, linted, built, served workspace HTTP 200, and returned a 12/12 healthy receipt",
+              "Control": "Prior-head fresh public-branch clone",
+              "Observed": "At 9febe479: installed 408 packages, passed 22 tests, typechecked, linted, built, served workspace HTTP 200, and returned a 12/12 healthy receipt",
               "Status": "VERIFIED"
+            },
+            {
+              "Control": "Corrected remote fresh clone and CI",
+              "Observed": "Pending explicit corrective-run budget approval; prior hosted run does not prove the unpushed correction",
+              "Status": "BLOCKED"
             }
           ]
         }
@@ -120,7 +142,8 @@
           "items": [
             "Authorized: explicit-path commit, task-branch push, and pull request.",
             "Not authorized: merge, production deployment, provider mutation, credential entry, payment action, or account creation.",
-            "A distinct REVIEWER session must issue the final implementation verdict."
+            "A distinct REVIEWER session must issue the final implementation verdict.",
+            "The corrected local commit remains unpushed until corrective hosted-run budget is explicitly authorized."
           ]
         }
       ]
