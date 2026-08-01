@@ -101,13 +101,12 @@ Source: a new single-branch HTTPS clone of the pushed public branch at commit `9
 | Local source/test/build/browser | VERIFIED as listed above |
 | GitHub public visibility | VERIFIED |
 | Task branch/commit | VERIFIED on GitHub at the SHA above |
-| Pull request | PENDING at this manifest revision |
+| Pull request | VERIFIED GITHUB | Public PR `https://github.com/shrishmanglik/case-proof/pull/1`; opened as draft so the URL could be recorded before the single full hosted validation |
 | Hosted CI execution | UNKNOWN until the PR workflow runs real steps |
 | Deployment/provider/auth/database/payment | NOT AUTHORIZED / UNKNOWN |
 | Customer, employer, demand, adoption, revenue, savings, outcomes | UNKNOWN; no claim made |
 
 ## Remaining gates
 
-- Open the PR and record its URL without starting a full validation while it is draft.
 - Mark the evidence-complete PR ready to start its single full hosted validation.
 - Obtain a verdict from a distinct REVIEWER session. Do not merge or deploy.

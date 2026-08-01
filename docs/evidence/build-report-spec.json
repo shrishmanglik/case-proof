@@ -22,6 +22,11 @@
               "evidence": "GitHub CLI reported visibility=PUBLIC and isPrivate=false for shrishmanglik/case-proof."
             },
             {
+              "state": "VERIFIED",
+              "claim": "The authorized public pull request exists and remains unmerged.",
+              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 was opened as draft to record the evidence URL before its single full hosted validation."
+            },
+            {
               "state": "GAP",
               "claim": "Deployment, provider schema, customer demand, adoption, outcomes, and revenue remain unknown.",
               "evidence": "No deployment or provider mutation was authorized. No customer or commercial evidence was supplied or fabricated."
