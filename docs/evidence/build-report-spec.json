@@ -1,0 +1,119 @@
+{
+  "title": "CaseProof initial build evidence report",
+  "subtitle": "Builder closeout candidate before public pull-request review",
+  "author": "CaseProof Development Studio BUILDER",
+  "decisions_needed": [],
+  "sections": [
+    {
+      "title": "Outcome",
+      "subtitle": "Commercially coherent vertical",
+      "blocks": [
+        {
+          "type": "facts",
+          "items": [
+            {
+              "state": "DONE",
+              "claim": "CaseProof implements a recruiter-inspectable evidence workflow rather than a generic prototype.",
+              "evidence": "Next.js application, typed domain engine, typed API, 12 deterministic controls, human authority, receipts, records, recovery documentation, tests, and source-only RLS schema."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "Public repository visibility was checked before implementation.",
+              "evidence": "GitHub CLI reported visibility=PUBLIC and isPrivate=false for shrishmanglik/case-proof."
+            },
+            {
+              "state": "GAP",
+              "claim": "Deployment, provider schema, customer demand, adoption, outcomes, and revenue remain unknown.",
+              "evidence": "No deployment or provider mutation was authorized. No customer or commercial evidence was supplied or fabricated."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Verification",
+      "subtitle": "Controls answer the material question",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": ["Control", "Observed", "Status"],
+          "rows": [
+            {
+              "Control": "Failing-before",
+              "Observed": "Stub engine returned 0 controls; expected 12; exit 1",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Full suite",
+              "Observed": "4 files and 22 tests passed",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Detector mutation",
+              "Observed": "Disabling DET-CP-R4 made the gate exit 1 and suite UNHEALTHY",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Restored gate twice",
+              "Observed": "Each run passed 1 of 1 with exit 0",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Typecheck, lint, build",
+              "Observed": "All exited 0",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Production browser journey",
+              "Observed": "Review revocation and mutation recovery worked; no console errors; no mobile overflow",
+              "Status": "VERIFIED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Authority and boundaries",
+      "blocks": [
+        {
+          "type": "facts",
+          "items": [
+            {
+              "state": "VERIFIED",
+              "claim": "The complete governed blueprint was read and digested.",
+              "evidence": "3,565 lines; SHA-256 8F55D2A78CB415E066C7B11914266B12148F5AD14F1ACC531F2CBEE3FE83065D. The private blueprint is not committed."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "The corrected Tier-1 authority root governed this build.",
+              "evidence": "The original dispatch root was stale. The parent-task correction was applied and the stale root was not used or mutated."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "Vedic Astro was used only as a read-only quality reference.",
+              "evidence": "Architecture, test, recovery, RLS, and evidence-ceiling patterns were inspected. No domain code or live-status claim was copied."
+            },
+            {
+              "state": "GAP",
+              "claim": "Shared product-registry currentness could not be established.",
+              "evidence": "Registry records disagreed with higher-authority current canon, so no live product claim was borrowed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Publication boundary",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Authorized: explicit-path commit, task-branch push, and pull request.",
+            "Not authorized: merge, production deployment, provider mutation, credential entry, payment action, or account creation.",
+            "A distinct REVIEWER session must issue the final implementation verdict."
+          ]
+        }
+      ]
+    }
+  ]
+}
