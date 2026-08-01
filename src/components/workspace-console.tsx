@@ -47,8 +47,8 @@ export function WorkspaceConsole() {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
-      <div className="space-y-6">
+    <div className="grid min-w-0 gap-6 xl:grid-cols-[.72fr_1.28fr]">
+      <div className="min-w-0 space-y-6">
         <Card className="p-5 sm:p-6">
           <div className="flex items-start justify-between gap-4"><div><p className="eyebrow">Synthetic initiative</p><h2 className="mt-2 text-xl font-semibold">Retry-safe notification status</h2></div><Badge tone="good">Admitted</Badge></div>
           <p className="mt-4 text-sm leading-6 text-[var(--muted)]">A bounded, fabricated workflow for demonstrating product controls. It contains no resident, health, employer, customer, or production data.</p>
@@ -60,7 +60,7 @@ export function WorkspaceConsole() {
         </Card>
       </div>
 
-      <div className="space-y-6">
+      <div className="min-w-0 space-y-6">
         <Card className="p-5 sm:p-7">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><p className="eyebrow">Human readiness review</p><h2 className="mt-2 text-2xl font-semibold">The story cannot approve itself.</h2></div><Badge tone={reviewed ? "good" : "warn"}>{reviewed ? "Human review recorded" : "Human action required"}</Badge></div>
           <form className="mt-7 grid gap-5" onChange={() => { if (reviewed) setReviewed(false); }} onSubmit={form.handleSubmit(() => setReviewed(true))}>
@@ -76,7 +76,7 @@ export function WorkspaceConsole() {
           <div aria-live="polite" className="p-5 sm:p-6">
             {error && <div role="alert" className="flex gap-3 rounded-xl border border-[var(--danger)]/25 bg-[var(--danger)]/8 p-4 text-sm text-[var(--danger-soft)]"><AlertTriangle size={18} aria-hidden="true" />{error}</div>}
             {!receipt && !error && <div className="rounded-xl border border-dashed border-white/12 p-8 text-center"><p className="text-sm font-semibold">No proof receipt yet</p><p className="mt-2 text-xs text-[var(--muted)]">Run the disabled detector first, then restore it. No external system is touched.</p></div>}
-            {receipt && <div><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div className="flex items-center gap-3">{receipt.status === "HEALTHY" ? <Check className="text-[var(--good-soft)]" size={20} aria-hidden="true" /> : <ShieldAlert className="text-[var(--danger-soft)]" size={20} aria-hidden="true" />}<div><p className="text-sm font-semibold">Suite {receipt.status.toLowerCase()}</p><p className="text-xs text-[var(--muted)]">{receipt.healthyCount}/{receipt.totalCount} detectors healthy · synthetic only</p></div></div><Badge tone={receipt.status === "HEALTHY" ? "good" : "bad"}>{receipt.status}</Badge></div><div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{receipt.controls.map((control) => <div key={control.requirementId} className="rounded-xl border border-white/8 bg-black/10 p-3"><div className="flex items-center justify-between gap-2"><span className="text-xs font-bold">{control.requirementId}</span><span className={`size-2 rounded-full ${control.status === "HEALTHY" ? "bg-[var(--good)]" : "bg-[var(--danger)]"}`} aria-label={control.status} /></div><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{control.label}</p></div>)}</div><div className="mt-5 flex items-center gap-2 border-t border-white/8 pt-4 text-xs text-[var(--muted)]"><ArrowRight size={14} aria-hidden="true" /> Receipt digest <code className="truncate text-[var(--signal-soft)]">{receipt.suiteDigest}</code></div></div>}
+            {receipt && <div><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div className="flex items-center gap-3">{receipt.status === "HEALTHY" ? <Check className="text-[var(--good-soft)]" size={20} aria-hidden="true" /> : <ShieldAlert className="text-[var(--danger-soft)]" size={20} aria-hidden="true" />}<div><p className="text-sm font-semibold">Suite {receipt.status.toLowerCase()}</p><p className="text-xs text-[var(--muted)]">{receipt.healthyCount}/{receipt.totalCount} detectors healthy · synthetic only</p></div></div><Badge tone={receipt.status === "HEALTHY" ? "good" : "bad"}>{receipt.status}</Badge></div><div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{receipt.controls.map((control) => <div key={control.requirementId} className="rounded-xl border border-white/8 bg-black/10 p-3"><div className="flex items-center justify-between gap-2"><span className="text-xs font-bold">{control.requirementId}</span><span className={`size-2 rounded-full ${control.status === "HEALTHY" ? "bg-[var(--good)]" : "bg-[var(--danger)]"}`} aria-label={control.status} /></div><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{control.label}</p></div>)}</div><div className="mt-5 flex min-w-0 items-center gap-2 border-t border-white/8 pt-4 text-xs text-[var(--muted)]"><ArrowRight className="shrink-0" size={14} aria-hidden="true" /><span className="shrink-0">Receipt digest</span><code className="min-w-0 flex-1 truncate text-[var(--signal-soft)]">{receipt.suiteDigest}</code></div></div>}
           </div>
         </Card>
       </div>

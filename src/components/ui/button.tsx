@@ -12,7 +12,7 @@ const buttonVariants = cva(
         ghost: "text-[var(--muted)] hover:bg-white/6 hover:text-[var(--paper)]",
         danger: "border border-[var(--danger)]/40 bg-[var(--danger)]/10 text-[var(--danger-soft)] hover:bg-[var(--danger)]/16",
       },
-      size: { default: "min-h-11", sm: "min-h-9 px-4 text-xs" },
+      size: { default: "min-h-11", sm: "min-h-11 px-4 text-xs" },
     },
     defaultVariants: { variant: "primary", size: "default" },
   },

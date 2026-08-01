@@ -30,7 +30,7 @@ export interface SyntheticFixture {
 
 export interface DetectorDecision {
   detectorId: DetectorId;
-  detectorVersion: "1.0.0";
+  detectorVersion: "1.1.0";
   decision: ControlDecision;
   issueCode?: string;
   trace: string[];

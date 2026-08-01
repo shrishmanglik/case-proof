@@ -4,23 +4,32 @@ import { requirementIds, type ControlReceipt, type DetectorDecision, type Detect
 
 type Detector = (input: Record<string, unknown>) => boolean;
 
-const list = (value: unknown) => Array.isArray(value) && value.length > 0;
 const text = (value: unknown) => typeof value === "string" && value.trim().length > 0;
+const textList = (value: unknown) => Array.isArray(value) && value.length > 0 && value.every(text);
+const distinctTextList = (value: unknown, minimum: number) => {
+  if (!Array.isArray(value) || value.length < minimum || !value.every(text)) return false;
+  return new Set(value.map((item) => (item as string).trim().toLocaleLowerCase("en-US"))).size >= minimum;
+};
 const truthy = (value: unknown) => value === true;
+const nonNegativeInteger = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
+const positiveInteger = (value: unknown) => nonNegativeInteger(value) && value > 0;
+const nonNegativeNumber = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
+const positiveNumber = (value: unknown) => nonNegativeNumber(value) && value > 0;
+const detectorVersion = "1.1.0" as const;
 
 const detectors: Record<DetectorId, Detector> = {
-  "DET-CP-R1": (i) => text(i.outcome) && list(i.owners) && text(i.boundary) && list(i.exclusions) && text(i.stopAuthority),
+  "DET-CP-R1": (i) => text(i.outcome) && textList(i.owners) && text(i.boundary) && textList(i.exclusions) && text(i.stopAuthority),
   "DET-CP-R2": (i) => text(i.goalVersion) && text(i.storyVersion) && text(i.rationale) && text(i.scopeDigest),
-  "DET-CP-R3": (i) => text(i.userIncrement) && text(i.learningObjective) && list(i.dependencies) && list(i.exclusions),
-  "DET-CP-R4": (i) => text(i.userOutcome) && list(i.preconditions) && list(i.acceptanceCriteria) && list(i.edgeCases) && text(i.failureBehavior) && text(i.telemetry) && Array.isArray(i.reviewers) && i.reviewers.length >= 2,
+  "DET-CP-R3": (i) => text(i.userIncrement) && text(i.learningObjective) && textList(i.dependencies) && textList(i.exclusions),
+  "DET-CP-R4": (i) => text(i.userOutcome) && textList(i.preconditions) && textList(i.acceptanceCriteria) && textList(i.edgeCases) && text(i.failureBehavior) && text(i.telemetry) && distinctTextList(i.reviewers, 2),
   "DET-CP-R5": (i) => text(i.owner) && text(i.requiredBy) && ["BLOCKED", "AT_RISK", "RESOLVED"].includes(String(i.state)) && text(i.evidence) && text(i.escalation) && text(i.forecastEffect),
   "DET-CP-R6": (i) => truthy(i.synthetic) && truthy(i.purposeBound) && i.aiAllowed === false && truthy(i.approved) && i.dataClass === "synthetic-notification-metadata",
-  "DET-CP-R7": (i) => truthy(i.sourceLinked) && truthy(i.uncertaintyLabelled) && truthy(i.humanAccepted) && i.executable === false,
+  "DET-CP-R7": (i) => text(i.proposal) && truthy(i.sourceLinked) && truthy(i.uncertaintyLabelled) && truthy(i.humanAccepted) && i.executable === false,
   "DET-CP-R8": (i) => truthy(i.badFixtureRejected) && truthy(i.cleanFixturePassed) && truthy(i.detectorHealthy) && truthy(i.userVisibleVerified) && truthy(i.repeatedDigestMatch),
-  "DET-CP-R9": (i) => text(i.artifactDigest) && list(i.acceptanceReceipts) && text(i.cohort) && text(i.observability) && text(i.rollbackPlan) && text(i.rollbackAuthority) && text(i.reconciliationProof),
-  "DET-CP-R10": (i) => truthy(i.approvedNotes) && truthy(i.trainingComplete) && truthy(i.entitlementVerified) && truthy(i.supportReady) && list(i.limitations) && truthy(i.rollbackReady),
-  "DET-CP-R11": (i) => Number(i.expectedCount) > 0 && Number(i.expectedCount) === Number(i.observedCount) && truthy(i.collectorHealthy) && Number(i.missing) === 0 && Number(i.duplicates) === 0 && Number(i.delayed) === 0 && truthy(i.userVisibleVerified),
-  "DET-CP-R12": (i) => Number(i.collectedRevenue) > 0 && Number(i.observedCost) >= 0 && text(i.acceptedValueEvidence) && truthy(i.nonBuilderOperated) && truthy(i.recoveryProven) && ["REPEAT", "EXPAND", "PARK", "KILL"].includes(String(i.authorizedDecision)),
+  "DET-CP-R9": (i) => text(i.artifactDigest) && textList(i.acceptanceReceipts) && text(i.cohort) && text(i.observability) && text(i.rollbackPlan) && text(i.rollbackAuthority) && text(i.reconciliationProof),
+  "DET-CP-R10": (i) => truthy(i.approvedNotes) && truthy(i.trainingComplete) && truthy(i.entitlementVerified) && truthy(i.supportReady) && textList(i.limitations) && truthy(i.rollbackReady),
+  "DET-CP-R11": (i) => positiveInteger(i.expectedCount) && nonNegativeInteger(i.observedCount) && i.expectedCount === i.observedCount && truthy(i.collectorHealthy) && i.missing === 0 && i.duplicates === 0 && i.delayed === 0 && truthy(i.userVisibleVerified),
+  "DET-CP-R12": (i) => positiveNumber(i.collectedRevenue) && nonNegativeNumber(i.observedCost) && text(i.acceptedValueEvidence) && truthy(i.nonBuilderOperated) && truthy(i.recoveryProven) && ["REPEAT", "EXPAND", "PARK", "KILL"].includes(String(i.authorizedDecision)),
 };
 
 function stableValue(value: unknown): unknown {
@@ -36,17 +45,17 @@ export function stableDigest(value: unknown): string {
 }
 
 function evaluate(fixture: SyntheticFixture, disabled: Set<DetectorId>): DetectorDecision {
-  const trace = [`fixture:${fixture.id}`, `rule:${fixture.detectorId}@1.0.0`, "source:synthetic-fixture.v1"];
+  const trace = [`fixture:${fixture.id}`, `rule:${fixture.detectorId}@${detectorVersion}`, "source:synthetic-fixture.v1"];
   if (disabled.has(fixture.detectorId)) {
     const payload = { detectorId: fixture.detectorId, decision: "BLOCKED", issueCode: "DETECTOR_UNAVAILABLE", trace };
-    return { ...payload, detectorVersion: "1.0.0", decision: "BLOCKED", unresolvedUnknowns: ["Detector execution health is unavailable."], evidenceDigest: stableDigest(payload) };
+    return { ...payload, detectorVersion, decision: "BLOCKED", unresolvedUnknowns: ["Detector execution health is unavailable."], evidenceDigest: stableDigest(payload) };
   }
 
   const passed = detectors[fixture.detectorId](fixture.input);
   const decision = passed ? "PASS" : "REJECT";
   const issueCode = passed ? undefined : issueCodes[fixture.requirementId];
   const payload = { detectorId: fixture.detectorId, decision, issueCode, trace, inputDigest: stableDigest(fixture.input) };
-  return { detectorId: fixture.detectorId, detectorVersion: "1.0.0", decision, issueCode, trace, unresolvedUnknowns: [], evidenceDigest: stableDigest(payload) };
+  return { detectorId: fixture.detectorId, detectorVersion, decision, issueCode, trace, unresolvedUnknowns: [], evidenceDigest: stableDigest(payload) };
 }
 
 export function runProofSuite(options: { disabledDetectors?: DetectorId[] } = {}): ProofSuiteReceipt {

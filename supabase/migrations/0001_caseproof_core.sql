@@ -27,18 +27,21 @@ create table public.cp_initiatives (
   boundary text not null,
   exclusions jsonb not null default '[]'::jsonb check (jsonb_typeof(exclusions) = 'array'),
   risk_class text not null check (risk_class in ('LOW', 'MODERATE', 'HIGH')),
-  stop_authority_id uuid not null references auth.users(id),
+  stop_authority_id uuid not null,
   status text not null default 'DRAFT' check (status in ('DRAFT', 'BLOCKED', 'ADMITTED', 'IN_DELIVERY', 'RELEASED', 'ROLLED_BACK', 'CLOSED', 'SUPERSEDED')),
   entity_version integer not null default 1 check (entity_version > 0),
-  created_by uuid not null references auth.users(id),
+  created_by uuid not null,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint cp_initiatives_tenant_id_id_key unique (tenant_id, id),
+  constraint cp_initiatives_stop_authority_membership_fk foreign key (tenant_id, stop_authority_id) references public.cp_memberships(tenant_id, user_id) on delete restrict,
+  constraint cp_initiatives_creator_membership_fk foreign key (tenant_id, created_by) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 create table public.cp_stories (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.cp_tenants(id) on delete cascade,
-  initiative_id uuid not null references public.cp_initiatives(id) on delete cascade,
+  initiative_id uuid not null,
   story_version text not null,
   user_outcome text not null,
   acceptance_criteria jsonb not null check (jsonb_typeof(acceptance_criteria) = 'array'),
@@ -47,16 +50,18 @@ create table public.cp_stories (
   telemetry_contract text not null,
   status text not null default 'DRAFT' check (status in ('DRAFT', 'HELD', 'READY', 'REJECTED', 'SUPERSEDED')),
   entity_version integer not null default 1 check (entity_version > 0),
-  created_by uuid not null references auth.users(id),
+  created_by uuid not null,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint cp_stories_initiative_tenant_fk foreign key (tenant_id, initiative_id) references public.cp_initiatives(tenant_id, id) on delete cascade,
+  constraint cp_stories_creator_membership_fk foreign key (tenant_id, created_by) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 create table public.cp_dependencies (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.cp_tenants(id) on delete cascade,
-  initiative_id uuid not null references public.cp_initiatives(id) on delete cascade,
-  owner_id uuid not null references auth.users(id),
+  initiative_id uuid not null,
+  owner_id uuid not null,
   required_by date not null,
   state text not null check (state in ('IDENTIFIED', 'BLOCKED', 'AT_RISK', 'RESOLVED', 'UNKNOWN', 'SUPERSEDED')),
   evidence_digest text not null,
@@ -64,47 +69,56 @@ create table public.cp_dependencies (
   forecast_effect text not null,
   entity_version integer not null default 1 check (entity_version > 0),
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint cp_dependencies_initiative_tenant_fk foreign key (tenant_id, initiative_id) references public.cp_initiatives(tenant_id, id) on delete cascade,
+  constraint cp_dependencies_owner_membership_fk foreign key (tenant_id, owner_id) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 create table public.cp_proof_runs (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.cp_tenants(id) on delete cascade,
-  initiative_id uuid not null references public.cp_initiatives(id) on delete cascade,
+  initiative_id uuid not null,
   suite_version text not null,
   fixture_set_digest text not null,
   suite_digest text not null,
   status text not null check (status in ('HEALTHY', 'UNHEALTHY', 'HELD')),
   disabled_detectors jsonb not null default '[]'::jsonb check (jsonb_typeof(disabled_detectors) = 'array'),
-  executed_by uuid not null references auth.users(id),
-  created_at timestamptz not null default now()
+  executed_by uuid not null,
+  created_at timestamptz not null default now(),
+  constraint cp_proof_runs_tenant_initiative_id_key unique (tenant_id, initiative_id, id),
+  constraint cp_proof_runs_initiative_tenant_fk foreign key (tenant_id, initiative_id) references public.cp_initiatives(tenant_id, id) on delete cascade,
+  constraint cp_proof_runs_executor_membership_fk foreign key (tenant_id, executed_by) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 create table public.cp_evidence_receipts (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.cp_tenants(id) on delete cascade,
-  initiative_id uuid not null references public.cp_initiatives(id) on delete cascade,
-  proof_run_id uuid references public.cp_proof_runs(id) on delete restrict,
+  initiative_id uuid not null,
+  proof_run_id uuid,
   record_type text not null,
   record_version text not null,
   provenance text not null check (provenance in ('IMPORTED', 'CALCULATED', 'MODEL_PROPOSED', 'HUMAN_CONFIRMED', 'APPROVED', 'REJECTED', 'SUPERSEDED')),
   evidence_digest text not null,
   payload jsonb not null,
-  created_by uuid not null references auth.users(id),
-  created_at timestamptz not null default now()
+  created_by uuid not null,
+  created_at timestamptz not null default now(),
+  constraint cp_evidence_initiative_tenant_fk foreign key (tenant_id, initiative_id) references public.cp_initiatives(tenant_id, id) on delete cascade,
+  constraint cp_evidence_proof_tenant_fk foreign key (tenant_id, initiative_id, proof_run_id) references public.cp_proof_runs(tenant_id, initiative_id, id) on delete restrict,
+  constraint cp_evidence_creator_membership_fk foreign key (tenant_id, created_by) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 create table public.cp_audit_events (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null references public.cp_tenants(id) on delete cascade,
-  actor_id uuid not null references auth.users(id),
+  actor_id uuid not null,
   action text not null,
   entity_type text not null,
   entity_id uuid not null,
   before_digest text,
   after_digest text not null,
   reason text not null,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  constraint cp_audit_actor_membership_fk foreign key (tenant_id, actor_id) references public.cp_memberships(tenant_id, user_id) on delete restrict
 );
 
 alter table public.cp_tenants enable row level security;
