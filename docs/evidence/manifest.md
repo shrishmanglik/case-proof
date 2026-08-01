@@ -20,6 +20,7 @@ Prepared: 2026-08-01 (America/Toronto)
 | GitHub repository is public | VERIFIED GITHUB | `gh repo view`: `shrishmanglik/case-proof`, `visibility=PUBLIC`, `isPrivate=false` |
 | Clean starting state | VERIFIED LOCAL | Isolated clone on `main@60beff7a8fb3b3ee54752ea436698b5195663969`; `git status` clean before branch creation |
 | Task workspace | VERIFIED LOCAL | Isolated task clone on branch `dev/case-proof-initial-build` |
+| Pushed build commit | VERIFIED GITHUB | Remote branch resolved to `9febe479aadd49bc2afa382f74cabbac0bda8806` before fresh-clone proof |
 | Collision boundary | VERIFIED LOCAL | Only the CaseProof clone was mutated; source blueprint and governed operating root were read-only |
 
 ## Implementation
@@ -79,19 +80,34 @@ Artifacts:
 - `docs/evidence/20260801-0909-caseproof-build-report.html` (self-contained claim-state report)
 - `docs/evidence/latest.html` (stable pointer to the same report)
 
+## Fresh-clone proof
+
+Source: a new single-branch HTTPS clone of the pushed public branch at commit `9febe479aadd49bc2afa382f74cabbac0bda8806`. The temporary clone was removed after verification.
+
+| Control | Observed | State |
+|---|---|---|
+| `npm.cmd ci --no-audit --no-fund` | 408 packages installed from the committed lockfile | VERIFIED |
+| `npm.cmd test` | 4 files, 22 tests passed | VERIFIED |
+| `npm.cmd run typecheck` | Exit 0 | VERIFIED |
+| `npm.cmd run lint` | Exit 0 | VERIFIED |
+| `npm.cmd run build` | Exit 0; all documented routes produced | VERIFIED |
+| Production `/workspace` | HTTP 200 on port 3220 | VERIFIED |
+| Production `POST /api/v1/proof-runs` | `HEALTHY`, 12/12, `externalEffects=NONE`, `persistence=SYNTHETIC_IN_MEMORY` | VERIFIED |
+
 ## Truth-layer separation
 
 | Layer | State |
 |---|---|
 | Local source/test/build/browser | VERIFIED as listed above |
 | GitHub public visibility | VERIFIED |
-| Task branch/commit/PR | PENDING at this manifest revision |
+| Task branch/commit | VERIFIED on GitHub at the SHA above |
+| Pull request | PENDING at this manifest revision |
 | Hosted CI execution | UNKNOWN until the PR workflow runs real steps |
 | Deployment/provider/auth/database/payment | NOT AUTHORIZED / UNKNOWN |
 | Customer, employer, demand, adoption, revenue, savings, outcomes | UNKNOWN; no claim made |
 
 ## Remaining gates
 
-- Commit explicit repository paths, push the authorized branch, and open the PR.
-- Prove a fresh clone of the pushed branch can install, test, build, and run the primary workflow.
+- Open the PR and record its URL without starting a full validation while it is draft.
+- Mark the evidence-complete PR ready to start its single full hosted validation.
 - Obtain a verdict from a distinct REVIEWER session. Do not merge or deploy.

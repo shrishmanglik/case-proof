@@ -67,6 +67,11 @@
               "Control": "Production browser journey",
               "Observed": "Review revocation and mutation recovery worked; no console errors; no mobile overflow",
               "Status": "VERIFIED"
+            },
+            {
+              "Control": "Fresh public-branch clone",
+              "Observed": "Installed 408 packages, passed 22 tests, typechecked, linted, built, served workspace HTTP 200, and returned a 12/12 healthy receipt",
+              "Status": "VERIFIED"
             }
           ]
         }
