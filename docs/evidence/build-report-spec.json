@@ -1,0 +1,152 @@
+{
+  "title": "CaseProof corrective build evidence report",
+  "subtitle": "Independent-review remediation held before corrective hosted validation",
+  "author": "CaseProof Development Studio BUILDER",
+  "decisions_needed": [
+    "Approve one corrective hosted PR validation so the reviewed local correction can be pushed to PR #1."
+  ],
+  "sections": [
+    {
+      "title": "Outcome",
+      "subtitle": "Commercially coherent vertical",
+      "blocks": [
+        {
+          "type": "facts",
+          "items": [
+            {
+              "state": "DONE",
+              "claim": "CaseProof implements a recruiter-inspectable evidence workflow rather than a generic prototype.",
+              "evidence": "Next.js application, typed domain engine, typed API, 12 deterministic controls, human authority, receipts, records, recovery documentation, tests, and source-only RLS schema."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "Public repository visibility was checked before implementation.",
+              "evidence": "GitHub CLI reported visibility=PUBLIC and isPrivate=false for shrishmanglik/case-proof."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "The authorized public pull request exists and remains unmerged.",
+              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 is open, ready for review, unmerged, and passed a real hosted validation at prior head 1ebd131818828b1671dd54a900267dbec11f8456."
+            },
+            {
+              "state": "BLOCKED",
+              "claim": "Independent review required correction before approval.",
+              "evidence": "The REVIEWER returned REVISE. Local commit 18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8 closes validator, tenant-integrity, target-size, and mobile-overflow findings but is not pushed pending corrective-run budget authority."
+            },
+            {
+              "state": "GAP",
+              "claim": "Deployment, provider schema, customer demand, adoption, outcomes, and revenue remain unknown.",
+              "evidence": "No deployment or provider mutation was authorized. No customer or commercial evidence was supplied or fabricated."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Verification",
+      "subtitle": "Controls answer the material question",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": ["Control", "Observed", "Status"],
+          "rows": [
+            {
+              "Control": "Failing-before",
+              "Observed": "Stub engine returned 0 controls; expected 12; exit 1",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Independent-review failing control",
+              "Observed": "CP-R4, CP-R7, and CP-R12 accepted invalid required evidence; 3 tests failed before correction",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Full suite",
+              "Observed": "Corrected local suite: 4 files and 46 tests passed",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Tenant join mutation matrix",
+              "Observed": "12 tenant-qualified relationship mutations were each rejected by the schema contract",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Detector mutation",
+              "Observed": "Disabling DET-CP-R4 made the gate exit 1 and suite UNHEALTHY",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Restored gate twice",
+              "Observed": "Each run passed 1 of 1 with exit 0",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Typecheck, lint, build",
+              "Observed": "All exited 0",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Production browser journey",
+              "Observed": "Review revocation and mutation recovery worked; detector controls measured 44px; no console errors; no mobile overflow after restored receipt",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Prior-head fresh public-branch clone",
+              "Observed": "At 9febe479: installed 408 packages, passed 22 tests, typechecked, linted, built, served workspace HTTP 200, and returned a 12/12 healthy receipt",
+              "Status": "VERIFIED"
+            },
+            {
+              "Control": "Corrected remote fresh clone and CI",
+              "Observed": "Pending explicit corrective-run budget approval; prior hosted run does not prove the unpushed correction",
+              "Status": "BLOCKED"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Authority and boundaries",
+      "blocks": [
+        {
+          "type": "facts",
+          "items": [
+            {
+              "state": "VERIFIED",
+              "claim": "The complete governed blueprint was read and digested.",
+              "evidence": "3,565 lines; SHA-256 8F55D2A78CB415E066C7B11914266B12148F5AD14F1ACC531F2CBEE3FE83065D. The private blueprint is not committed."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "The corrected Tier-1 authority root governed this build.",
+              "evidence": "The original dispatch root was stale. The parent-task correction was applied and the stale root was not used or mutated."
+            },
+            {
+              "state": "VERIFIED",
+              "claim": "Vedic Astro was used only as a read-only quality reference.",
+              "evidence": "Architecture, test, recovery, RLS, and evidence-ceiling patterns were inspected. No domain code or live-status claim was copied."
+            },
+            {
+              "state": "GAP",
+              "claim": "Shared product-registry currentness could not be established.",
+              "evidence": "Registry records disagreed with higher-authority current canon, so no live product claim was borrowed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Publication boundary",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Authorized: explicit-path commit, task-branch push, and pull request.",
+            "Not authorized: merge, production deployment, provider mutation, credential entry, payment action, or account creation.",
+            "A distinct REVIEWER session must issue the final implementation verdict.",
+            "The corrected local commit remains unpushed until corrective hosted-run budget is explicitly authorized."
+          ]
+        }
+      ]
+    }
+  ]
+}
