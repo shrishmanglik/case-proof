@@ -1,10 +1,12 @@
 # CaseProof
 
+**Live application:** [case-proof.vercel.app](https://case-proof.vercel.app)
+
 CaseProof is an evidence-bound delivery control plane for safety-critical product work. It connects accepted direction to implementation-ready stories, dependency state, detector health, release evidence, rollback, rollout, and post-release reconciliation.
 
-The repository is a real, runnable application work sample—not a deployed customer product and not a claim about an employer's internal systems.
+The repository is a real, publicly deployed application work sample—not a customer deployment and not a claim about an employer's internal systems.
 
-> **Evidence boundary:** every included initiative, person identifier, event, receipt, and commercial record is synthetic. Buyer demand, production use, provider configuration, commercial viability, adoption, savings, and outcomes remain **UNKNOWN**. CaseProof is independent and is not affiliated with, commissioned by, or endorsed by SafelyYou.
+> **Evidence boundary:** every included initiative, person identifier, event, receipt, and commercial record is synthetic. Buyer demand, customer use, database/auth/payment provider configuration, commercial viability, adoption, savings, and outcomes remain **UNKNOWN**. The Vercel deployment is provider-verified; that does not prove customer or commercial use. CaseProof is independent and is not affiliated with, commissioned by, or endorsed by SafelyYou.
 
 ## The problem
 
@@ -168,23 +170,24 @@ The proposed wedge is a bounded Delivery Reliability Diagnostic for teams whose 
 
 | Capability | State |
 |---|---|
-| Responsive Next.js application and primary workflow | Implemented locally |
-| Typed domain model and API boundary | Implemented locally |
-| 12 deterministic controls / 24 synthetic fixtures | Implemented locally |
-| Repeatability and critical mutation control | Implemented locally |
-| Human readiness-review interaction | Implemented locally, session-only |
+| Responsive Next.js application and primary workflow | Implemented and publicly deployed |
+| Typed domain model and API boundary | Implemented and deployed |
+| 12 deterministic controls / 24 synthetic fixtures | Implemented and deployed |
+| Repeatability and critical mutation control | Implemented, CI-verified, and production-browser verified |
+| Human readiness-review interaction | Implemented and deployed, session-only |
 | Supabase schema and RLS policies | Source implemented; not applied |
 | Authentication and durable multi-tenant persistence | Proposed |
 | Roadmap, issue, release, analytics, and support adapters | Proposed, read-only first |
 | AI proposal assistance | Proposed and intentionally non-executable |
-| Production deployment or customer use | Not authorized / UNKNOWN |
+| Vercel production deployment | Provider-verified `READY` at [case-proof.vercel.app](https://case-proof.vercel.app) |
+| Customer use | UNKNOWN |
 | Commercial validation and outcomes | UNKNOWN |
 
 ## Roadmap
 
-1. Independent review of this initial vertical.
-2. Founder decision on whether the public work sample should merge; no deployment is implied.
-3. If separately authorized, add local Supabase contract testing before any provider application.
+1. Add executable local Supabase policy tests before any provider schema application.
+2. Add authentication and durable persistence only with a separately reviewed tenant and recovery contract.
+3. Validate the commercial hypothesis with real buyer evidence before making pricing, demand, or outcome claims.
 4. Run qualified discovery and artifact-chain audits before treating the commercial wedge as demand.
 5. Add read-only adapters only after tenant, privacy, authority, and recovery contracts are independently accepted.
 

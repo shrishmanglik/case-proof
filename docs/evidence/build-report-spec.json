@@ -1,10 +1,8 @@
 {
-  "title": "CaseProof corrective build evidence report",
-  "subtitle": "Independent-review remediation held before corrective hosted validation",
+  "title": "CaseProof production evidence report",
+  "subtitle": "Merged, deployed, and production-browser verified",
   "author": "CaseProof Development Studio BUILDER",
-  "decisions_needed": [
-    "Approve one corrective hosted PR validation so the reviewed local correction can be pushed to PR #1."
-  ],
+  "decisions_needed": [],
   "sections": [
     {
       "title": "Outcome",
@@ -25,18 +23,18 @@
             },
             {
               "state": "VERIFIED",
-              "claim": "The authorized public pull request exists and remains unmerged.",
-              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 is open, ready for review, unmerged, and passed a real hosted validation at prior head 1ebd131818828b1671dd54a900267dbec11f8456."
+              "claim": "The authorized public pull request passed corrective CI and was merged.",
+              "evidence": "https://github.com/shrishmanglik/case-proof/pull/1 merged as 0869de7b2ce975eeea87d43738682867a0e50924 after run 30864988570 completed real install, test, typecheck, lint, and build steps."
             },
             {
-              "state": "BLOCKED",
-              "claim": "Independent review required correction before approval.",
-              "evidence": "The REVIEWER returned REVISE. Local commit 18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8 closes validator, tenant-integrity, target-size, and mobile-overflow findings but is not pushed pending corrective-run budget authority."
+              "state": "DONE",
+              "claim": "Independent review required correction, then approved the immutable corrected SHA.",
+              "evidence": "The distinct REVIEWER returned REVISE at 1ebd131, then APPROVE with no findings at corrected head 0846e8b1aee770b01f3d55496f5fee2f13476a59."
             },
             {
-              "state": "GAP",
-              "claim": "Deployment, provider schema, customer demand, adoption, outcomes, and revenue remain unknown.",
-              "evidence": "No deployment or provider mutation was authorized. No customer or commercial evidence was supplied or fabricated."
+              "state": "VERIFIED",
+              "claim": "The public Vercel deployment is provider-ready and production-browser verified.",
+              "evidence": "Deployment dpl_Cent7NCr8r4KDQMDjaLkLinG21mn reports target=production and status=READY at https://case-proof.vercel.app. This proves deployment, not customers, demand, outcomes, or revenue."
             }
           ]
         }
@@ -87,18 +85,18 @@
             },
             {
               "Control": "Production browser journey",
-              "Observed": "Review revocation and mutation recovery worked; detector controls measured 44px; no console errors; no mobile overflow after restored receipt",
+              "Observed": "On https://case-proof.vercel.app, review revocation and mutation recovery worked; API/routes returned 200; no console errors; no mobile overflow",
               "Status": "VERIFIED"
             },
             {
-              "Control": "Prior-head fresh public-branch clone",
-              "Observed": "At 9febe479: installed 408 packages, passed 22 tests, typechecked, linted, built, served workspace HTTP 200, and returned a 12/12 healthy receipt",
+              "Control": "Corrected remote fresh clone",
+              "Observed": "At 0846e8b: installed 408 packages, passed 46 tests, typechecked, linted, built, served workspace HTTP 200, and returned the stable 12/12 receipt",
               "Status": "VERIFIED"
             },
             {
-              "Control": "Corrected remote fresh clone and CI",
-              "Observed": "Pending explicit corrective-run budget approval; prior hosted run does not prove the unpushed correction",
-              "Status": "BLOCKED"
+              "Control": "Corrective hosted CI",
+              "Observed": "Run 30864988570 completed checkout, install, 46 tests, typecheck, lint, and build at 0846e8b",
+              "Status": "VERIFIED"
             }
           ]
         }
@@ -140,10 +138,9 @@
         {
           "type": "list",
           "items": [
-            "Authorized: explicit-path commit, task-branch push, and pull request.",
-            "Not authorized: merge, production deployment, provider mutation, credential entry, payment action, or account creation.",
-            "A distinct REVIEWER session must issue the final implementation verdict.",
-            "The corrected local commit remains unpushed until corrective hosted-run budget is explicitly authorized."
+            "Completed authority: task-branch push, pull request, corrective CI, merge, and Vercel deployment.",
+            "Distinct REVIEWER verdict: APPROVE at the exact corrected SHA later merged.",
+            "Still not performed or claimed: Supabase schema application, auth/payment mutation, customer use, demand, revenue, or outcomes."
           ]
         }
       ]

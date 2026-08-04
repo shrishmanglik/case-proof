@@ -1,6 +1,6 @@
 # Evidence manifest
 
-Prepared: 2026-08-01 (America/Toronto)
+Prepared: 2026-08-01; provider truth updated 2026-08-03 (America/Toronto)
 
 ## Authority and source
 
@@ -27,7 +27,7 @@ Prepared: 2026-08-01 (America/Toronto)
 
 | Capability | State | Evidence |
 |---|---|---|
-| Next.js 16 App Router / TypeScript / Tailwind v4 / shadcn-style source components | DONE LOCAL | Production build route inventory includes overview, workspace, proof, records, boundaries, icon, and typed API |
+| Next.js 16 App Router / TypeScript / Tailwind v4 / shadcn-style source components | DONE PUBLIC | Provider-ready production deployment includes overview, workspace, proof, records, boundaries, icon, and typed API |
 | Typed domain and API boundary | DONE LOCAL | `src/domain/*`; `POST /api/v1/proof-runs` with Zod validation |
 | Deterministic control spine | DONE LOCAL | 12 detectors, 12 known-bad fixtures, 12 clean fixtures, stable SHA-256 receipts |
 | Human authority | DONE LOCAL | Session-local readiness form; invalid edits revoke prior review state; consequence authority is never automated |
@@ -82,21 +82,34 @@ Artifacts:
 - `docs/screenshots/workspace-mobile.png` (58,674 bytes)
 - `docs/evidence/20260801-0909-caseproof-build-report.html` (self-contained claim-state report)
 - `docs/evidence/20260801-0954-caseproof-build-report.html` (corrective claim-state report)
+- `docs/evidence/20260803-2027-caseproof-production-report.html` (merged production claim-state report)
 - `docs/evidence/latest.html` (stable pointer to the same report)
 
 ## Fresh-clone proof
 
-Source: a new single-branch HTTPS clone of the pushed public branch at commit `9febe479aadd49bc2afa382f74cabbac0bda8806`. The temporary clone was removed after verification.
+Source: a new single-branch HTTPS clone of the corrected pushed public branch at commit `0846e8b1aee770b01f3d55496f5fee2f13476a59`. The temporary clone was removed after verification.
 
 | Control | Observed | State |
 |---|---|---|
 | `npm.cmd ci --no-audit --no-fund` | 408 packages installed from the committed lockfile | VERIFIED |
-| `npm.cmd test` | 4 files, 22 tests passed | VERIFIED |
+| `npm.cmd test` | 4 files, 46 tests passed | VERIFIED |
 | `npm.cmd run typecheck` | Exit 0 | VERIFIED |
 | `npm.cmd run lint` | Exit 0 | VERIFIED |
 | `npm.cmd run build` | Exit 0; all documented routes produced | VERIFIED |
 | Production `/workspace` | HTTP 200 on port 3220 | VERIFIED |
 | Production `POST /api/v1/proof-runs` | `HEALTHY`, 12/12, `externalEffects=NONE`, `persistence=SYNTHETIC_IN_MEMORY` | VERIFIED |
+
+## GitHub merge and provider deployment
+
+| Claim | State | Evidence |
+|---|---|---|
+| Distinct final review | VERIFIED | Read-only REVIEWER returned `APPROVE` with no findings at exact SHA `0846e8b1aee770b01f3d55496f5fee2f13476a59` |
+| Corrective hosted validation | VERIFIED GITHUB | Run `30864988570` completed checkout, install, 46 tests, typecheck, lint, and build at the reviewed SHA |
+| Pull request merge | VERIFIED GITHUB | PR `https://github.com/shrishmanglik/case-proof/pull/1` merged as `0869de7b2ce975eeea87d43738682867a0e50924` |
+| Vercel deployment | VERIFIED PROVIDER | `dpl_Cent7NCr8r4KDQMDjaLkLinG21mn`; `target=production`; `status=READY`; alias `https://case-proof.vercel.app` |
+| Production browser workflow | VERIFIED PROVIDER SURFACE | Human review/revocation, disabled detector, restored detector, two API 200 responses, route 200 responses, 390px no-overflow check, and zero console errors/warnings |
+| Supabase schema/auth state | UNKNOWN | Source migration remains unapplied; no database or auth provider mutation occurred |
+| Customer/commercial state | UNKNOWN | No customer, demand, revenue, savings, adoption, or outcome claim is made |
 
 ## Truth-layer separation
 
@@ -104,20 +117,22 @@ Source: a new single-branch HTTPS clone of the pushed public branch at commit `9
 |---|---|
 | Local source/test/build/browser | VERIFIED as listed above |
 | GitHub public visibility | VERIFIED |
-| Task branch/commit | SPLIT TRUTH | GitHub PR head is `1ebd131818828b1671dd54a900267dbec11f8456`; corrected local commit is `18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8` and is not pushed at this manifest revision |
-| Pull request | VERIFIED GITHUB | Public PR `https://github.com/shrishmanglik/case-proof/pull/1`; open, ready for review, and unmerged |
-| Hosted CI execution | VERIFIED FOR PRIOR HEAD | Run `30701440007` executed real checkout/install/test/typecheck/lint/build steps and passed at `1ebd131818828b1671dd54a900267dbec11f8456`; it does not validate the unpushed correction |
-| Deployment/provider/auth/database/payment | NOT AUTHORIZED / UNKNOWN |
+| Task branch/commit | VERIFIED GITHUB | Corrected reviewed head `0846e8b1aee770b01f3d55496f5fee2f13476a59` is public and incorporated into main merge commit `0869de7b2ce975eeea87d43738682867a0e50924` |
+| Pull request | MERGED GITHUB | Public PR `https://github.com/shrishmanglik/case-proof/pull/1` merged 2026-08-03 |
+| Hosted CI execution | VERIFIED GITHUB | Corrective run `30864988570` executed real steps and passed at the reviewed SHA |
+| Vercel deployment | VERIFIED PROVIDER | Production target `READY` at `https://case-proof.vercel.app` |
+| Supabase/auth/database/payment | NOT MUTATED / UNKNOWN |
 | Customer, employer, demand, adoption, revenue, savings, outcomes | UNKNOWN; no claim made |
 
 ## Independent review and correction
 
 - Distinct REVIEWER verdict at PR head `1ebd131818828b1671dd54a900267dbec11f8456`: `REVISE` with two P1 and two P2 findings.
-- Local commit `18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8` corrects strict required-value validation, tenant-qualified relational integrity, 44px detector targets, and mobile receipt overflow.
+- Commit `18824b97d274ef9fb19ff5e2820fcf04c1a5a4f8` corrects strict required-value validation, tenant-qualified relational integrity, 44px detector targets, and mobile receipt overflow.
 - Corrected local proof: 46/46 tests, typecheck, lint, build, zero audit vulnerabilities, expected critical mutation failure, and two restored passes.
+- Distinct re-review at `0846e8b1aee770b01f3d55496f5fee2f13476a59`: `APPROVE` with no findings.
 
-## Remaining gates
+## Remaining UNKNOWNs
 
-- Obtain a distinct read-only re-review of the corrected local immutable commit.
-- Obtain explicit corrective hosted-run budget approval before pushing the corrected commit to PR #1.
-- After authorization, push the same reviewed commit, re-prove a fresh clone of the remote branch, and run one corrective hosted validation. Do not merge or deploy.
+- Applied Supabase schema, live RLS, authentication, durable persistence, and payment state.
+- Customers, buyer demand, adoption, revenue, savings, and outcomes.
+- A production deployment proves public availability only; it does not change either UNKNOWN.
